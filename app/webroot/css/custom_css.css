@@ -269,6 +269,11 @@ body {
 		padding-top: 15px!important;
 	}
 
+	.pdd-0-lr{
+		padding-right: 0px!important;
+		padding-left: 0px!important;
+	}
+
 	.msg-remove{
 		text-decoration: none!important;
 		color: red;
@@ -292,4 +297,28 @@ body {
 
 	.select2-container{
 		border-radius: 0px!important;
+	}
+
+	.pdd-15-l{
+		padding: 0 0 0 15px !important;
+	}
+
+	.crs-pointer{
+		cursor:pointer;
+	}
+
+
+	.convolist{
+		max-height: 500px;
+		border-radius:5px;
+		border:1px solid #ccc;
+		overflow-y: auto;
+	}
+
+	.pdd-5-trbl{
+		padding: 5px!important;
+	}
+
+	hr.ln-5{
+		line-height: 5px
 	}

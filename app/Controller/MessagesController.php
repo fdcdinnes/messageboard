@@ -31,7 +31,7 @@
 		    }	
 
 		    $listCount = count($message);
-	    	$this->layout= '';
+	    	$this->layout= 'messageboard';
 	    	$this->set(compact('message', 'messageCount', 'listCount'));
 	    	// $this->render(false);
     	}
@@ -47,7 +47,6 @@
     			], false);
 	    		$this->layout= '';
 		    	$this->render(false);
-
 	    	}
     	}
 
@@ -59,12 +58,71 @@
 			}
 			
     		$this->loadModel('User');
-	        $Users = $this->User->find('all', array('fields'=>array('id','name', 'image')));
-	       	$this->layout= '';
+	        $Users = $this->User->find('all', array('fields'=>array('id','name', 'image'), 'conditions' => array('id !=' => $_SESSION['user_id'])));
+	       	$this->layout= 'messageboard';
 	    	$this->set(compact('Users'));
 	        // print_r($Users);
 		    // $this->render(false);
     	}
+
+    	public function send(){
+    		session_start();
+			if(!isset($_SESSION['user_id'])){
+				session_destroy();
+				$this->redirect('../login');
+			}
+			if ($this->request->is('post')) { 
+				// $this->Flash->set('This is a message');   
+				$this->request->data['from_id'] = $_SESSION['user_id'];
+				$this->request->data['created'] = date('Y-m-d H:i:s');
+		  		$messageCount = $this->Message->save($this->request->data);
+		    	$this->redirect('../messages');
+	    	}else{
+	    		$this->redirect('../messages/new');
+	    	}
+    	}
+
+    	public function reply($to_id = null){
+    		session_start();
+			if(!isset($_SESSION['user_id'])){
+				session_destroy();
+				$this->redirect('../login');
+			}
+			$this->loadModel('User');
+			$Users = $this->User->findById(hex2bin($to_id));
+			$messages = $this->Message->find('all', array(
+		        'conditions' => array('OR' => array(
+		        	array('to_id' => $Users['User']['id'], 'from_id' => $_SESSION['user_id']),
+		        	array('to_id' => $_SESSION['user_id'], 'from_id' => $Users['User']['id']),
+		        )),
+		        'order' => 'Message.created ASC',
+		    ));
+
+	       	$this->layout= 'messageboard';
+	    	$this->set(compact('Users', 'messages', '_SESSION'));
+	    	;
+
+    	}
+
+
+    	public function sendreply(){
+    		session_start();
+			if(!isset($_SESSION['user_id'])){
+				session_destroy();
+				$this->redirect('../login');
+			}
+			if ($this->request->is('post')) {
+				$this->request->data['to_id'] = hex2bin($this->request->data['to_id']);
+				$this->request->data['from_id'] = $_SESSION['user_id'];
+				$this->request->data['created'] = date('Y-m-d H:i:s');
+		  		$messageCount = $this->Message->save($this->request->data);
+		    	$this->redirect('../messages/reply/' . bin2hex($this->request->data['to_id']));
+	    	}else{
+	    		$this->redirect('../messages/new');
+	    	}
+    	}
+
+
 
 	}
 

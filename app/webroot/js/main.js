@@ -47,17 +47,30 @@ $(document).ready(function(){
         $('#ct' + msgHandler).fadeOut('slow');
     });
 
- $(".js-example-basic-single").select2({
-   formatResult: format,
-    formatSelection: format,
+    $(".js-example-basic-single").select2({
+        formatResult: format,
+        formatSelection: format,
     escapeMarkup: function(m) { return m; }
- });
+    });
+
+    $('div.viewconvo, p.viewconvo').on('click', function(e){
+        window.location.href = "messages/reply/" + $(this).attr('data-account');
+    });
+
+
+    var scroll=$('div.convolist');
+    scroll.animate({scrollTop: scroll.prop("scrollHeight")});
+
+    // $('div.convolist').animate({scrollTop: $target.height()}, 1000);
+
 });
 
 function format(state) {
     if (!state.id) 
+    var userpp  =  $(state.element).attr('data-image'); 
+    var optimage = $(state.element).attr('data-image'); 
+    return "<img class='flag img-circle' src='"+ optimage +"' width='25'/>&nbsp;&nbsp;" + state.text;
     return state.text;
-    return "<img class='flag' src='http://icons.iconarchive.com/icons/designbolts/free-multimedia/1024/Photo-icon.png' width='25'/> " + state.text;
 }
 
 
