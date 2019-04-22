@@ -161,9 +161,18 @@
 					}else{
 						;
 					}
-
 				}elseif(str_replace(' ', '', $this->request->data['hubby']) == ''){
 					$this->Flash->messageboardflash('*Please provide your hubby', array(
+					    'key' => 'validationerror',
+					    'params' => array(
+					        'alert' => 'danger',
+					        'display' => 'alertpermanent'
+					    )
+					));	
+					$this->redirect('../users/edit');
+
+				}elseif(str_replace(' ', '', $this->request->data['birthdate']) == ''){
+					$this->Flash->messageboardflash('*Please Provide your Birth Date', array(
 					    'key' => 'validationerror',
 					    'params' => array(
 					        'alert' => 'danger',

@@ -2,7 +2,7 @@
 	<div class="col-sm-6 col-md-offset-3">							
 			<div class="col-sm-12">	
 				<div class="col-sm-8 pdd-0">					
-					<h2><b>Messages</b></h2>
+					<h2><b>Message Detail</b></h2>
 				</div>							
 			</div>
 

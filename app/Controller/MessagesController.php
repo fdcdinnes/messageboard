@@ -9,10 +9,10 @@
 				session_destroy();
 				$this->redirect('../login');
 			}
-			$initialRow = 3;
+			$initialRow = 10;
 			$limitRow = $initialRow;
 			if ($this->request->is('post')) {
-	    		$limitRow = (int) $this->request->data['submit'] + 3;
+	    		$limitRow = (int) $this->request->data['submit'] + 10;
 	    	}
 
 			$messageCount = $this->Message->find('count', array(
@@ -173,10 +173,10 @@
 			$Users = $this->User->findById(hex2bin($to_id));
 		    $sessionUserId = $_SESSION['user_id'];
 
-			$initialRow = 3;
+			$initialRow = 10;
 			$limitRow = $initialRow;
 			if ($this->request->is('post')) {
-	    		$limitRow = (int) $this->request->data['submit'] + 3;
+	    		$limitRow = (int) $this->request->data['submit'] + 10;
 	    	}
 
 			$messageCount = $this->Message->find('count', array(

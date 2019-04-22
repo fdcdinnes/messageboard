@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+<title>Message Board</title>
 <?php echo $this->Html->css('font-css'); ?>
 <?php echo $this->Html->css('font-icon'); ?>
 <?php echo $this->Html->css('fontawesome-min'); ?>

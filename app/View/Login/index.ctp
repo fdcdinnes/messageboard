@@ -4,15 +4,20 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bootstrap CRUD Data Table for Database with Modal Form</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<title>Message Board | login</title>
+<?php echo $this->Html->css('font-css'); ?>
+<?php echo $this->Html->css('font-icon'); ?>
+<?php echo $this->Html->css('fontawesome-min'); ?>
+<?php echo $this->Html->css('bootstrap-min'); ?>
+<?php echo $this->Html->css('select2'); ?>
+<?php echo $this->Html->css('bootstrap-datepicker.min'); ?>
 <?php echo $this->Html->css('custom_css'); ?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<?php echo $this->Html->script('jquery-1.12.4.min');?>
+<?php echo $this->Html->script('bootstrap.min');?>
+<?php echo $this->Html->script('bootstrap-datepicker.min');?>
 <?php echo $this->Html->script('main');?>
+<?php echo $this->Html->script('select2');?>
 
 
 </head>
@@ -40,13 +45,9 @@
 								<h2><b>Login</b></h2>
 							</div>
 
-							<?php if(isset($_GET['error_login'])): ?>
 							<div class="col-sm-12">		
-								<div class="col-sm-12 alert alert-danger text-center">
-									<span> Email or Password undefined</span>									
-								</div>				
-							</div>
-							<?php endif; ?>
+								<?php echo $this->Flash->render('loginError') ?>	
+							</div>							
 							<div class="modal-body">					
 								<div class="form-group">
 									<label>Email</label>

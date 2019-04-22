@@ -23,7 +23,16 @@
 				$_SESSION['user_id'] = $this->Login->id;
 				$this->redirect('/users/profile');
 		    }else{
-				$this->redirect('/login?error_login=undefined user');
+		    	$this->Flash->messageboardflash('*Email or Password undefined', array(
+					    'key' => 'loginError',
+					    'params' => array(
+					        'alert' => 'danger',
+					        'display' => 'alertpermanent'
+					    )
+					));	
+				$this->redirect('/login');
+
+				// $this->redirect('/login?error_login=undefined user');
 		    }
 	        return true;
     	}
