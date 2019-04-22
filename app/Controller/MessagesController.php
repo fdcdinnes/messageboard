@@ -129,15 +129,7 @@
 			if(!isset($_SESSION['user_id'])){
 				session_destroy();
 				$this->redirect('../login');
-			}
-
-			$this->Flash->messageboardflash('Your message was already sent', array(
-			    'key' => 'messagesent',
-			    'params' => array(
-			        'alert' => 'info',
-			        'display' => 'alerttemp'
-			    )
-			));	
+			}			
 
     		$this->loadModel('User');
 	        $Users = $this->User->find('all', array('fields'=>array('id','name', 'image'), 'conditions' => array('id !=' => $_SESSION['user_id'])));
@@ -152,7 +144,13 @@
 				$this->redirect('../login');
 			}
 			if ($this->request->is('post')) { 
-				// $this->Flash->set('This is a message');   
+				$this->Flash->messageboardflash('Your message was already sent', array(
+				    'key' => 'messagesent',
+				    'params' => array(
+				        'alert' => 'info',
+				        'display' => 'alerttemp'
+				    )
+				));	
 				$this->request->data['from_id'] = $_SESSION['user_id'];
 				$this->request->data['created'] = date('Y-m-d H:i:s');
 		  		$messageCount = $this->Message->save($this->request->data);
