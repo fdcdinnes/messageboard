@@ -8,6 +8,11 @@
 				<a href="messages/new" class="btn btn-primary"><span>New Message</span></a>
 			</div>							
 		</div>
+
+
+		<div class="col-sm-12">						
+			<?php echo $this->Flash->render('messagesent') ?>	
+		</div>		
 		<div class="col-sm-12">						
 			<div class="col-sm-12 pdd-0 list-group">	
 				<?php 
@@ -18,11 +23,14 @@
 				<div id="ct<?php  echo $msgbin2hex ?>" class="list-group-item message">
 					<div class="row">											
 						<div class="col-sm-2 crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>">
-							<?php if($mymessage[$mymessage['userReflect']]['image'] != ''):
-								echo $this->Html->image($mymessage[$mymessage['userReflect']]['image'], array("alt" => "alternative_text", "class" => "img-responsive", "id" => "output"));
-							else: ?>
-								<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGSlfCyewmhkjDINdHMeYnEhwqbcBRS_UBzqxUOuM94aLTYJ5b" class="img-responsive" alt="Cinque Terre">
-							<?php endif; ?>
+							<?php 
+								if($mymessage[$mymessage['userReflect']]['image'] != ''){
+									echo $this->Html->image($mymessage[$mymessage['userReflect']]['image'], array("alt" => "alternative_text", "class" => "img-responsive", "id" => "output"));
+								}
+								else{
+									echo $this->Html->image("D_users.jpe", array("alt" => "alternative_text", "class" => "img-responsive img-thumbnail", "id" => "output", "style" => "width:100%"));
+								}
+							?>
 						</div>
 						<div class="col-sm-10">
 							<p class="col-sm-12 pdd-0 text-justify crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>">

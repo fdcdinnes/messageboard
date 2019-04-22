@@ -26,13 +26,19 @@ $(document).ready(function(){
         }
     });
 
-    if(sPageURL.match(/edit/)){
-        $('datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-             autoclose: true,
-            closeOnDateSelect: true
-        }); 
-    }
+
+    $('.msgReply-remove').on('click', function(){
+        $('#deleteReplyModal').modal('show');
+        $('.delete-MessageReply').attr({'for':$(this).attr('for')});
+    });
+
+    $('.delete-MessageReply').on('click', function(){
+        var msgHandler = $(this).attr('for');
+        $.get('../../messages/permessagedelete/' + $(this).attr('for'), function(resp){
+        });
+        $('#rply' + msgHandler).fadeOut('slow');
+    });
+
 
     $('.msg-remove').on('click', function(){
         $('#deleteEmployeeModal').modal('show');
@@ -47,11 +53,19 @@ $(document).ready(function(){
         $('#ct' + msgHandler).fadeOut('slow');
     });
 
-    $(".js-example-basic-single").select2({
+    if(!sPageURL.match(/login/)){
+        $('datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+             autoclose: true,
+            closeOnDateSelect: true
+        }); 
+
+        $(".js-example-basic-single").select2({
         formatResult: format,
         formatSelection: format,
-    escapeMarkup: function(m) { return m; }
-    });
+        escapeMarkup: function(m) { return m; }
+        });
+    }
 
     $('div.viewconvo, p.viewconvo').on('click', function(e){
         window.location.href = "messages/reply/" + $(this).attr('data-account');
@@ -61,18 +75,31 @@ $(document).ready(function(){
     var scroll=$('div.convolist');
     scroll.animate({scrollTop: scroll.prop("scrollHeight")});
 
-    // $('div.convolist').animate({scrollTop: $target.height()}, 1000);
+    if($('div[for=alerttemp]').length > 0){
+        setInterval(function(){ $('div[for=alerttemp]').fadeOut() }, 1500);
+    }
+
+    $('input#editpassword').on('keyup', function(){
+       $('div#divconpassword').fadeIn('fast');
+    }); 
+
+    $('input#sendreply').on('click', function(){
+        var content = $('textarea[name=content]');
+        var to_id = $('input[name=to_id]');
+        $.post('../sendreply', {content:content.val(), to_id:to_id.val()}, function(){
+            window.location.reload();
+        })
+    });   
 
 });
 
 function format(state) {
-    if (!state.id) 
+    if (!state.id)
     var userpp  =  $(state.element).attr('data-image'); 
     var optimage = $(state.element).attr('data-image'); 
     return "<img class='flag img-circle' src='"+ optimage +"' width='25'/>&nbsp;&nbsp;" + state.text;
     return state.text;
 }
-
 
 
 function customAlertModal(pram = ''){  
@@ -102,34 +129,17 @@ function onRegister(event){
     var confpassword = $('#confpassword'); 
     var Alertmodal = 0;
     var message_type, message_title, message_content, btnCancel, btnProceed, btnClass;
-
-    $('span[class$=-alert]').empty();
-    $('input.alert').removeClass('alert');
-
+    $('div#registerError').empty().fadeOut('fast');
     if(name.val().replace(/\s/g, '') == '' || (name.val().replace(/\s/g, '').length < 5 || name.val().replace(/\s/g, '').length > 20)){
-        var spanAlert = name.attr('id') + '-alert';
-        $('span.' + spanAlert).text('*Name should be 5-20 Characters');
-        name.addClass('alert');
-
+        $('div#registerError').text('*Name should be 5-20 Characters').fadeIn('fast');
     } else if(email.val().replace(/\s/g, '') == '' || !email.val().match(/@/)){
-        var spanAlert = email.attr('id') + '-alert';
-        $('span.' + spanAlert).text('*Invalid email');
-        email.addClass('alert');
-
+        $('div#registerError').text('*Invalid email').fadeIn('fast');
     } else if(password.val().replace(/\s/g, '').length < 8){
-        var spanAlert = password.attr('id') + '-alert';
-        $('span.' + spanAlert).text('*Password must be atleast 8 characters');
-        password.addClass('alert');
-
+        $('div#registerError').text('*Password must be atleast 8 characters').fadeIn('fast');
     } else if(password.val() != confpassword.val().replace(/\s/g, '')){
-        var spanAlert = confpassword.attr('id') + '-alert';
-        $('span.' + spanAlert).text('*Password mismatch');
-        confpassword.addClass('alert');
-
-    }else{
-         
-        $.get('users/checkemail/'+email.val(), {'checkemail':'email'}, function(response){
-              
+        $('div#registerError').text('*Password mismatch').fadeIn('fast');
+    }else{         
+        $.get('users/checkemail/'+email.val(), {'checkemail':'email'}, function(response){              
             if(response.length == 0){
                 $.post('users/add/', {name:name.val(), email:email.val(), password:password.val()}, function(repUser){
                     if(!jQuery.isEmptyObject(repUser)){
@@ -137,13 +147,10 @@ function onRegister(event){
                     }
                 },"json");    
             }else{
-                var spanAlert = email.attr('id') + '-alert';
-                $('span.' + spanAlert).text('*Email was already exist');
-                email.addClass('alert');
+                $('div#registerError').text('*Email was already exist').fadeIn('fast');
             }
         }, "json");
     }
-
 }
 
 

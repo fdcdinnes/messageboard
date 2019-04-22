@@ -7,8 +7,7 @@
 			if(!isset($_SESSION['user_id'])){
 				session_destroy();
 				$this->redirect('../login');
-			}
-			
+			}			
 	    	$this->layout= '';
 	        $this->set('user', $this->User->find('all'));
     	}
@@ -58,14 +57,13 @@
 		}
 
 
-		public function profile($id = null){
+		public function profile(){
 			session_start();
 			if(!isset($_SESSION['user_id'])){
 				session_destroy();
 				$this->redirect('../login');
 			}
 
-			$this->layout= '';
 	        $user = $this->User->findById($_SESSION['user_id']);	       
 			if(!empty($user)){
 				$user = $user['User'];
@@ -74,23 +72,24 @@
 				$diff = $today->diff($bday);
 				$user['age'] = $diff->y;
 				$user['Labelgender'] = ($user['gender'] == '') ? 'Not specified' : (($user['gender'] == 1) ? 'Male': 'Female');
-				$user['lastLoginIn'] = date('F d, Y  h a', strtotime($user['last_login_time']));;
-				$user['ConBirthDate'] = date('F d, Y', strtotime($user['birthdate']));;
+				$user['lastLoginIn'] = date('F d, Y  h a', strtotime($user['last_login_time']));
+				$user['ConBirthDate'] = date('F d, Y', strtotime($user['birthdate']));
 				$user['dateJoined'] = date('F d, Y  h a', strtotime($user['created']));
  			}else{
 				array();
 			}
+
+			$this->layout= 'messageboard';
 	        $this->set('user', $user);
 		}
 
-		public function edit($id = null){
+		public function edit(){
 			session_start();
 			if(!isset($_SESSION['user_id'])){
 				session_destroy();
 				$this->redirect('../login');
 			}
 
-			$this->layout= '';
 	        $user = $this->User->findById($_SESSION['user_id']);	       
 			if(!empty($user)){
 				$user = $user['User'];
@@ -104,7 +103,8 @@
 				$user['dateJoined'] = date('F d, Y  h a', strtotime($user['created']));
  			}else{
 				array();
-			}
+			}			
+			$this->layout= 'messageboard';
 	        $this->set('user', $user);
 		}
 
@@ -118,25 +118,71 @@
 
 			if ($this->request->is('post')){
 
-				$this->User->create();
-				$this->layout= '';
-				$this->render(false);
-				$this->request->data;
-
-				# validate -------------
+				$password = $this->request->data['password'];
+				# validate -------------				
 				if(strlen($this->request->data['name']) < 5 || strlen($this->request->data['name']) > 20){
-					$this->redirect('../users/edit/' . $_SESSION['user_id'] .'?error_update=name');
+					$this->Flash->messageboardflash('*Name should be 5-20 Characters', array(
+					    'key' => 'validationerror',
+					    'params' => array(
+					        'alert' => 'danger',
+					        'display' => 'alertpermanent'
+					    )
+					));	
+					$this->redirect('../users/edit');
+				}elseif(!preg_match('/@/', $this->request->data['email'])){	
+					$this->Flash->messageboardflash('*Invalid email', array(
+						    'key' => 'validationerror',
+						    'params' => array(
+						        'alert' => 'danger',
+						        'display' => 'alertpermanent'
+						    )
+						));	
+					$this->redirect('../users/edit');
+				}elseif(($password != 'default500') && ($this->request->data['password'] < 8 || $this->request->data['password'] != $this->request->data['conpassword'])){
+					print_r($password);
+					if(strlen($this->request->data['password']) < 8){
+						$this->Flash->messageboardflash('*Password must be atleast 8 characters', array(
+						    'key' => 'validationerror',
+						    'params' => array(
+						        'alert' => 'danger',
+						        'display' => 'alertpermanent'
+						    )
+						));	
+						$this->redirect('../users/edit');
+					}elseif($this->request->data['password'] != $this->request->data['conpassword']){
+						$this->Flash->messageboardflash('*Password mismatch', array(
+						    'key' => 'validationerror',
+						    'params' => array(
+						        'alert' => 'danger',
+						        'display' => 'alertpermanent'
+						    )
+						));	
+						$this->redirect('../users/edit');
+					}else{
+						;
+					}
 
 				}elseif(str_replace(' ', '', $this->request->data['hubby']) == ''){
-					$this->redirect('../users/edit/' . $_SESSION['user_id'] .'?error_update=hubby');
+					$this->Flash->messageboardflash('*Please provide your hubby', array(
+					    'key' => 'validationerror',
+					    'params' => array(
+					        'alert' => 'danger',
+					        'display' => 'alertpermanent'
+					    )
+					));	
+					$this->redirect('../users/edit');
+				} else{	
 
-				}else{	
 					$user = $this->User->findById($_SESSION['user_id']);
 					$this->User->id = $user['User']['id'];
 					$this->User->saveField('name', $this->request->data['name']);
 					$this->User->saveField('gender', $this->request->data['gender']);
+					$this->User->saveField('email', $this->request->data['email']);
+					$this->User->saveField('password', md5($this->request->data['password']));
 					$this->User->saveField('birthdate', date('Y-m-d', strtotime($this->request->data['birthdate'])));
 					$this->User->saveField('hubby', $this->request->data['hubby']);
+					$this->User->saveField('modified', date('Y-m-d H:i:s'));
+					$this->User->saveField('modified_ip', $this->get_client_ip());
 					
 					if($_FILES['image']['size'] > 0){
 						$target_path = WWW_ROOT . 'img/userphoto/';
@@ -145,8 +191,11 @@
 						$this->User->saveField('image', 'userphoto/' . $file_name);
 						move_uploaded_file($_FILES['image']['tmp_name'], $to_path);
 					}
-					$this->redirect('../users/profile/' . $this->User->id);
+					$this->redirect('../users/profile');
 				}	
+					
+				// $this->layout= '';
+				// $this->render(false);
 				return true;
 			}
 		}

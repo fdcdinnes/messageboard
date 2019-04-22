@@ -10,9 +10,12 @@
 <?php echo $this->Html->css('fontawesome-min'); ?>
 <?php echo $this->Html->css('bootstrap-min'); ?>
 <?php echo $this->Html->css('select2'); ?>
+<?php echo $this->Html->css('bootstrap-datepicker.min'); ?>
 <?php echo $this->Html->css('custom_css'); ?>
+
 <?php echo $this->Html->script('jquery-1.12.4.min');?>
 <?php echo $this->Html->script('bootstrap.min');?>
+<?php echo $this->Html->script('bootstrap-datepicker.min');?>
 <?php echo $this->Html->script('main');?>
 <?php echo $this->Html->script('select2');?>
 </head>
@@ -25,9 +28,25 @@
 						<h2>Message <b>Board</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="users/logout" class="btn btn-danger"><span>Logout</span></a>
-						<a href="messages" class="btn btn-success"><span>Messages</span></a>
-						<a href="users/profile/<?php echo $_SESSION['user_id']?>" class="btn btn-success"><span>Profile</span></a>
+                        <?php
+                            echo $this->Html->link(
+                                'Logout',
+                                '/users/logout',
+                                array('class' => 'btn btn-md btn-danger', 'target' => '')
+                            );
+
+                            echo $this->Html->link(
+                                'Messages',
+                                '/messages',
+                                array('class' => 'btn btn-md btn-success', 'target' => '')
+                            );
+
+                            echo $this->Html->link(
+                                'Profile',
+                                '/users/profile',
+                                array('class' => 'btn btn-md btn-success', 'target' => '')
+                            );
+                        ?>
 					</div>
                 </div>
             </div>         	

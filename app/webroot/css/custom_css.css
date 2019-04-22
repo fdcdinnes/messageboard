@@ -274,7 +274,7 @@ body {
 		padding-left: 0px!important;
 	}
 
-	.msg-remove{
+	.msg-remove, .msgReply-remove{
 		text-decoration: none!important;
 		color: red;
 		cursor: pointer
@@ -313,6 +313,7 @@ body {
 		border-radius:5px;
 		border:1px solid #ccc;
 		overflow-y: auto;
+		padding:10px;
 	}
 
 	.pdd-5-trbl{
@@ -321,4 +322,12 @@ body {
 
 	hr.ln-5{
 		line-height: 5px
+	}
+
+	.mrg-0{
+		margin-bottom: 0px!important;
+	}
+
+	div#registerError, div#divconpassword{
+		display: none;
 	}

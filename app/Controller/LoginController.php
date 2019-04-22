@@ -21,7 +21,7 @@
 
 				session_start();
 				$_SESSION['user_id'] = $this->Login->id;
-				$this->redirect('/users/profile/' . $this->Login->id);
+				$this->redirect('/users/profile');
 		    }else{
 				$this->redirect('/login?error_login=undefined user');
 		    }
