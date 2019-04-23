@@ -22,7 +22,7 @@
 
 				<div id="ct<?php  echo $msgbin2hex ?>" class="list-group-item message">
 					<div class="row">											
-						<div class="col-sm-2 crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>">
+						<div class="col-sm-2 crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>" data-toggle="tooltip" data-placement="bottom" title="View message details">
 							<?php 
 								if($mymessage[$mymessage['userReflect']]['image'] != ''){
 									echo $this->Html->image($mymessage[$mymessage['userReflect']]['image'], array("alt" => "alternative_text", "class" => "img-responsive", "id" => "output"));
@@ -33,7 +33,7 @@
 							?>
 						</div>
 						<div class="col-sm-10">
-							<p class="col-sm-12 pdd-0 text-justify crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>">
+							<p class="col-sm-12 pdd-0 text-justify crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>" data-toggle="tooltip" data-placement="bottom" title="View message details">
 								<?php echo (strlen($mymessage['Message']['content']) < 100) ? $mymessage['Message']['content'] : substr($mymessage['Message']['content'], 0, 100) .'...' ;?>
 							</p>
 

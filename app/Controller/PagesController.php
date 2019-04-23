@@ -45,12 +45,13 @@ class PagesController extends AppController {
  *	or MissingViewException in debug mode.
  */
 	public function display() {
-		$path = func_get_args();
+		return $this->redirect('/login');
 
+		
+		$path = func_get_args();
 		$count = count($path);
 		if (!$count) {
-			// return $this->redirect('/');
-			return $this->redirect('/login');
+			return $this->redirect('/');
 		}
 		$page = $subpage = $title_for_layout = null;
 
