@@ -16,6 +16,11 @@
 									$imguser = "../../img/D_users.jpe";
 								}
 								echo '&nbsp;&nbsp;&nbsp;&nbsp;<img src="'. $imguser .'" class="img-circle" width="25">&nbsp;&nbsp;' . $Users['User']['name'];
+								echo $this->Html->link(
+			                            'View Profile',
+			                            '/users/viewuserprofile/' . $Users['User']['id'],
+			                            array('class' => 'btn btn-md btn-primary pull-right', 'target' => '_blank')
+			                        ); 
 							?>
 						</span>
 					</div>
@@ -46,7 +51,6 @@
 										echo '</div>';
 									}else{
 										$myconvo['FromUser']['image'] = ($myconvo['FromUser']['image'] == '') ? 'D_users.jpe' : $myconvo['FromUser']['image'];
-
 										echo '<div class="col-md-11 alert alert-success pull-left" role="alert">';
 								  		echo '	<p>'. $myconvo['Message']['content'].'</p>';
 										echo '  <hr class="ln-5">';

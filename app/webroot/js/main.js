@@ -71,6 +71,10 @@ $(document).ready(function(){
         window.location.href = "messages/reply/" + $(this).attr('data-account');
     });
 
+    $('div.viewprfile').on('click', function(e){
+        window.open("users/viewuserprofile/" + $(this).attr('data-account'), '_blank');
+    });
+
 
     var scroll=$('div.convolist');
     scroll.animate({scrollTop: scroll.prop("scrollHeight")});
@@ -90,6 +94,19 @@ $(document).ready(function(){
             window.location.reload();
         })
     });   
+
+    $('span.messgeshowhide').on('click', function(){
+        if($(this).attr('for') === 'msg_2'){
+            $(this).attr({'for':'msg_1'});
+            $('p#msg_1' + $(this).attr('data-info')).hide();
+            $('p#msg_2' + $(this).attr('data-info')).slideDown( "fast" );
+        }else{
+            $(this).attr({'for':'msg_2'});
+            $('p#msg_2' + $(this).attr('data-info')).hide();
+            $('p#msg_1' + $(this).attr('data-info')).slideDown( "fast" );
+        }
+
+    });
 
 });
 

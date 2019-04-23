@@ -22,7 +22,7 @@
 
 				<div id="ct<?php  echo $msgbin2hex ?>" class="list-group-item message">
 					<div class="row">											
-						<div class="col-sm-2 crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>" data-toggle="tooltip" data-placement="bottom" title="View message details">
+						<div class="col-sm-2 crs-pointer viewprfile" data-account = "<?php echo $mymessage[$mymessage['userReflect']]['id'] ?>" data-toggle="tooltip" data-placement="bottom" title="View user Profile">
 							<?php 
 								if($mymessage[$mymessage['userReflect']]['image'] != ''){
 									echo $this->Html->image($mymessage[$mymessage['userReflect']]['image'], array("alt" => "alternative_text", "class" => "img-responsive", "id" => "output"));
@@ -33,13 +33,18 @@
 							?>
 						</div>
 						<div class="col-sm-10">
-							<p class="col-sm-12 pdd-0 text-justify crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>" data-toggle="tooltip" data-placement="bottom" title="View message details">
+							<p id="msg_1<?php  echo $msgbin2hex ?>" class="col-sm-10 pdd-0 text-justify crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>" data-toggle="tooltip" data-placement="bottom" title="View message details">
 								<?php echo (strlen($mymessage['Message']['content']) < 100) ? $mymessage['Message']['content'] : substr($mymessage['Message']['content'], 0, 100) .'...' ;?>
 							</p>
 
+							<p id="msg_2<?php  echo $msgbin2hex ?>" class="col-sm-10 pdd-0 text-justify crs-pointer viewconvo" data-account = "<?php echo bin2hex($mymessage[$mymessage['userReflect']]['id'])?>" data-toggle="tooltip" data-placement="bottom" title="View message details" style="display: none">
+								<?php echo $mymessage['Message']['content'];?>
+							</p>
+							<span class="col-sm-1 pdd-0 btn btn-warning pull-right messgeshowhide" data-info ="<?php  echo $msgbin2hex ?>" for="msg_1">...</span>
+
 							<span class="col-sm-12 text-right bdr-1-t">
 								<small>
-									<?php echo $mymessage[$mymessage['userReflect']]['name'] .' '. date('Y/m/d h:i:s a', strtotime($mymessage['Message']['created']))?>															
+									<?php echo $mymessage[$mymessage['userReflect']]['name'] .' '. date('Y/m/d h:i:s a', strtotime($mymessage['Message']['created']))?>	
 								</small>
 								&nbsp;|&nbsp;<a href="javascript: void(0)" class="msg-remove" for="<?php  echo $msgbin2hex ?>"> Delete </a>
 							</span>

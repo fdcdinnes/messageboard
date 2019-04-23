@@ -83,6 +83,42 @@
 	        $this->set('user', $user);
 		}
 
+
+		public function viewuserprofile($id = null){
+			session_start();
+			if(!isset($_SESSION['user_id'])){
+				session_destroy();
+				$this->redirect('../login');
+			}
+
+
+
+	        $user = $this->User->findById($id);	       
+			if(!empty($user)){
+				$user = $user['User'];
+				$bday = new DateTime($user['birthdate']);
+				$today = new Datetime(date('m.d.y'));
+				$diff = $today->diff($bday);
+				$user['age'] = $diff->y;
+				$user['Labelgender'] = ($user['gender'] == '') ? 'Not specified' : (($user['gender'] == 1) ? 'Male': 'Female');
+				$user['lastLoginIn'] = date('F d, Y  h a', strtotime($user['last_login_time']));
+				$user['ConBirthDate'] = date('F d, Y', strtotime($user['birthdate']));
+				$user['dateJoined'] = date('F d, Y  h a', strtotime($user['created']));
+ 			}else{
+				array();
+				$this->Flash->messageboardflash('Undefined user on record list', array(
+			    'key' => 'userNotExist',
+			    'params' => array(
+			        'alert' => 'danger',
+			        'display' => 'alertpermanent'
+			    )
+			));	
+			}
+			$this->layout= 'messageboard';
+	        $this->set('user', $user);
+		}
+
+
 		public function edit(){
 			session_start();
 			if(!isset($_SESSION['user_id'])){
